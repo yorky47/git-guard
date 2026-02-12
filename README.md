@@ -11,10 +11,15 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">🛡️ GitGuard</h3>
+    <p>
+    <img src="assets/logo.png" width="200" alt="GitGuard Logo">
+    </p>
 
-  <p align="center">
-    A natural language CLI that translates your intent into safe Git commands using GitHub Copilot.
+  <h1>🛡️ GitGuard - Git Safety Assistant</h1>
+
+  <p>
+    <i>Your intelligent safety net for Git operations</i>
+  </p>
     <br />
     <a href="https://github.com/yorky47/git-guard"><strong>Explore the repo »</strong></a>
     <br />
@@ -59,6 +64,38 @@
 
 **GitGuard** is a command-line interface (CLI) that bridges the gap between developers and the command line by translating natural language intentions into safe, executable Git commands. Instead of remembering complex Git syntax or worrying about dangerous operations, you simply describe what you want to do—and GitGuard suggests the right command, analyzes its safety, and asks for confirmation before executing.
 
+<div align="center">
+  <h2>📺 Visual Showcase</h2>
+  <p>Experience "Psychological Safety" in every Git command.</p>
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <th align="center">🔴 Disaster Prevention</th>
+      <th align="center">🟢 Intelligent Productivity</th>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="gifs/ex1.gif" width="420" alt="High Risk Scenario">
+        <br><i>"Delete all uncommitted changes"</i>
+      </td>
+      <td align="center">
+        <img src="gifs/ex2.gif" width="420" alt="Useful Command Scenario">
+        <br><i>"Undo last commit but keep work"</i>
+      </td>
+    </tr>
+    <tr><td colspan="2" style="height: 20px;"></td></tr>
+    <tr>
+      <th colspan="2" align="center">🔍 Fast & Safe Queries</th>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <img src="gifs/ex3.gif" width="420" alt="Safe Query Scenario">
+        <br><i>"Show current branch"</i>
+      </td>
+    </tr>
+  </table>
+</div>
+
 ### Key Features
 
 * **🗣️ Natural Language Intent**: Simply describe what you want to do (e.g., "undo last commit but keep my files")
@@ -102,20 +139,20 @@ GitGuard is built with modern, reliable technologies:
 Before you can use GitGuard, ensure you have the following installed:
 
 1. **Java 21 or higher**
-   - Download from [https://adoptopenjdk.net/](https://adoptopenjdk.net/) or use your package manager
-   - Verify: `java --version`
+    - Download from [https://adoptopenjdk.net/](https://adoptopenjdk.net/) or use your package manager
+    - Verify: `java --version`
 
 2. **Git 2.20 or higher**
-   - Download from [https://git-scm.com/](https://git-scm.com/)
-   - Verify: `git --version`
+    - Download from [https://git-scm.com/](https://git-scm.com/)
+    - Verify: `git --version`
 
-3. **GitHub CLI (gh)** 
-   - Install from [https://cli.github.com/](https://cli.github.com/)
-   - Verify: `gh --version`
+3. **GitHub CLI (gh)**
+    - Install from [https://cli.github.com/](https://cli.github.com/)
+    - Verify: `gh --version`
 
 4. **GitHub CLI Copilot Extension**
-   - Install with: `gh extension install github/gh-copilot`
-   - Verify: `gh copilot --version`
+    - Install with: `gh extension install github/gh-copilot`
+    - Verify: `gh copilot --version`
 
 ### Installation
 
@@ -130,8 +167,8 @@ Before you can use GitGuard, ensure you have the following installed:
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/yorkydev/GitGuard.git
-   cd GitGuard
+   git clone https://github.com/yorky47/git-guard.git
+   cd git-guard
    ```
 
 2. Build the project using Gradle
@@ -151,7 +188,7 @@ Before you can use GitGuard, ensure you have the following installed:
 #### Verify Installation
 
 ```sh
-gitguard --help
+gg --help
 ```
 
 Should display usage information and examples.
@@ -166,39 +203,39 @@ GitGuard is simple to use: describe your intent in natural language, and it hand
 ### Basic Usage
 
 ```sh
-gitguard <your intention in natural language>
+gg <your intention in natural language>
 ```
 
 ### Examples
 
 **Undo the last commit but keep your changes:**
 ```sh
-gitguard undo last commit but keep files
+gg undo last commit but keep files
 ```
 
 **Discard all uncommitted changes:**
 ```sh
-gitguard discard all changes
+gg discard all changes
 ```
 
 **Go back to a previous commit:**
 ```sh
-gitguard go back to previous commit
+gg go back to previous commit
 ```
 
 **Create and switch to a new branch:**
 ```sh
-gitguard create new branch for feature-x
+gg create new branch for feature-x
 ```
 
 **Force push to remote:**
 ```sh
-gitguard force push to origin
+gg force push to origin
 ```
 
 **Reset to main branch:**
 ```sh
-gitguard reset to main branch
+gg reset to main branch
 ```
 
 ### Workflow
@@ -433,9 +470,9 @@ We appreciate contributions! Whether it's bug reports, feature requests, or code
    ```
 
 3. **Make Your Changes**
-   - Follow Kotlin coding conventions
-   - Add tests for new functionality
-   - Update documentation as needed
+    - Follow Kotlin coding conventions
+    - Add tests for new functionality
+    - Update documentation as needed
 
 4. **Commit Your Changes**
    ```sh
@@ -448,16 +485,16 @@ We appreciate contributions! Whether it's bug reports, feature requests, or code
    ```
 
 6. **Open a Pull Request**
-   - Describe your changes clearly
-   - Reference any related issues
-   - Include before/after examples if applicable
+    - Describe your changes clearly
+    - Reference any related issues
+    - Include before/after examples if applicable
 
 ### Development Setup
 
 ```sh
 # Clone and navigate
 git clone https://github.com/yorky47/git-guard.git
-cd GitGuard
+cd git-guard
 
 # Build the project
 ./gradlew build
