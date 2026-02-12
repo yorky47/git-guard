@@ -16,12 +16,12 @@
   <p align="center">
     A natural language CLI that translates your intent into safe Git commands using GitHub Copilot.
     <br />
-    <a href="https://github.com/yorkydev/GitGuard"><strong>Explore the repo »</strong></a>
+    <a href="https://github.com/yorky47/git-guard"><strong>Explore the repo »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/yorkydev/GitGuard/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/yorky47/git-guard/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
-    <a href="https://github.com/yorkydev/GitGuard/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/yorky47/git-guard/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -121,7 +121,7 @@ Before you can use GitGuard, ensure you have the following installed:
 
 #### Option 1: Pre-built Binary (Recommended)
 
-1. Download the latest release from [GitHub Releases](https://github.com/yorkydev/GitGuard/releases)
+1. Download the latest release from [GitHub Releases](https://github.com/yorky47/git-guard/releases)
 2. Extract the archive to your preferred location
 3. Add the directory to your `PATH` environment variable
 4. Verify installation: `gitguard --help`
@@ -411,7 +411,7 @@ GitGuard detects and flags operations including:
 - Terminal output currently in English only
 - Risk classification based on command syntax, not semantic analysis
 
-See the [open issues](https://github.com/yorkydev/GitGuard/issues) for a full list of proposed features and known issues.
+See the [open issues](https://github.com/yorky47/git-guard/issues) for a full list of proposed features and known issues.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -424,7 +424,7 @@ We appreciate contributions! Whether it's bug reports, feature requests, or code
 
 1. **Fork the Repository**
    ```sh
-   git clone https://github.com/yorkydev/GitGuard.git
+   git clone https://github.com/yorky47/git-guard.git
    ```
 
 2. **Create Your Feature Branch**
@@ -456,7 +456,7 @@ We appreciate contributions! Whether it's bug reports, feature requests, or code
 
 ```sh
 # Clone and navigate
-git clone https://github.com/yorkydev/GitGuard.git
+git clone https://github.com/yorky47/git-guard.git
 cd GitGuard
 
 # Build the project
@@ -496,26 +496,26 @@ For more details, visit [unlicense.org](https://unlicense.org/)
 ## Contact
 
 **GitGuard Project**
-- GitHub: [@yorkydev](https://github.com/yorkydev)
-- Issues: [GitHub Issues](https://github.com/yorkydev/GitGuard/issues)
+- GitHub: [@yorky47](https://github.com/yorky47)
+- Issues: [GitHub Issues](https://github.com/yorky47/git-guard/issues)
 
-Project Repository: [https://github.com/yorkydev/GitGuard](https://github.com/yorkydev/GitGuard)
+Project Repository: [https://github.com/yorky47/git-guard](https://github.com/yorky47/git-guard)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/yorkydev/GitGuard.svg?style=for-the-badge
-[contributors-url]: https://github.com/yorkydev/GitGuard/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yorkydev/GitGuard.svg?style=for-the-badge
-[forks-url]: https://github.com/yorkydev/GitGuard/network/members
-[stars-shield]: https://img.shields.io/github/stars/yorkydev/GitGuard.svg?style=for-the-badge
-[stars-url]: https://github.com/yorkydev/GitGuard/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yorkydev/GitGuard.svg?style=for-the-badge
-[issues-url]: https://github.com/yorkydev/GitGuard/issues
-[license-shield]: https://img.shields.io/github/license/yorkydev/GitGuard.svg?style=for-the-badge
-[license-url]: https://github.com/yorkydev/GitGuard/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/yorky47/git-guard.svg?style=for-the-badge
+[contributors-url]: https://github.com/yorky47/git-guard/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/yorky47/git-guard.svg?style=for-the-badge
+[forks-url]: https://github.com/yorky47/git-guard/network/members
+[stars-shield]: https://img.shields.io/github/stars/yorky47/git-guard.svg?style=for-the-badge
+[stars-url]: https://github.com/yorky47/git-guard/stargazers
+[issues-shield]: https://img.shields.io/github/issues/yorky47/git-guard.svg?style=for-the-badge
+[issues-url]: https://github.com/yorky47/git-guard/issues
+[license-shield]: https://img.shields.io/github/license/yorky47/git-guard.svg?style=for-the-badge
+[license-url]: https://github.com/yorky47/git-guard/blob/master/LICENSE.txt
 [Kotlin.lang]: https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white
 [Kotlin-url]: https://kotlinlang.org/
 [GitHub-CLI]: https://img.shields.io/badge/GitHub%20CLI-181717?style=for-the-badge&logo=github&logoColor=white
