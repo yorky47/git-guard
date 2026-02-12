@@ -1,5 +1,14 @@
 package com.gitguard.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class CopilotJsonDto(
+    val command: String,
+    val explanation: String
+)
+
+
 /**
  * Represents the parsed response from GitHub Copilot CLI.
  *

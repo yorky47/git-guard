@@ -2,6 +2,8 @@ package com.gitguard.copilot
 
 import com.gitguard.model.CopilotResponse
 import java.io.IOException
+import com.gitguard.model.CopilotJsonDto
+import kotlinx.serialization.json.Json
 
 /**
  * Service for communicating with GitHub Copilot CLI.
@@ -11,16 +13,38 @@ import java.io.IOException
  */
 class CopilotService {
 
-    /**
-     * Suggests a Git command based on a natural language intent.
-     *
-     * @param intent A description of what the user wants to accomplish (e.g., "undo last commit")
-     * @return A parsed CopilotResponse containing the suggested command(s) and explanation
-     * @throws IOException if Copilot CLI is not installed or execution fails
-     */
+    private val TOOM_PROMPT = "Act:GitGuard Task:Intent2Git Output:JSON_Format:{command,explanation} Rules:StrictJSON,NoThinking,NoLogs,NoPreamble Intent:"
+    private val jsonParser = Json { ignoreUnknownKeys = true }
+
     fun suggest(intent: String): CopilotResponse {
-        val raw = executeCommand("suggest $intent")
-        return parseResponse(raw)
+        val fullPrompt = "suggest $TOOM_PROMPT $intent"
+        val raw = executeCommand(fullPrompt)
+        //print for debugging
+        //println(raw)
+        return parseJsonResponse(raw)
+    }
+
+    private fun parseJsonResponse(raw: String): CopilotResponse {
+        // Aislamos el JSON eliminando las estadísticas de uso de la CLI
+        val cleanOutput = raw.substringBefore("Total usage est:").trim()
+
+        return try {
+            // Buscamos el bloque JSON si la IA añade texto extra por error
+            val jsonMatch = Regex("\\{.*\\}", RegexOption.DOT_MATCHES_ALL).find(cleanOutput)?.value
+                ?: throw IOException("No JSON found in response")
+
+            val dto = jsonParser.decodeFromString<CopilotJsonDto>(jsonMatch)
+
+            CopilotResponse(
+                rawOutput = raw,
+                explanation = dto.explanation,
+                commands = listOf(dto.command),
+                hasWarning = raw.contains("destructive", ignoreCase = true) || raw.contains("lost", ignoreCase = true)
+            )
+        } catch (e: Exception) {
+            // Fallback en caso de error de parsing
+            CopilotResponse(raw, "Error parsing AI response: ${e.message}", emptyList(), false)
+        }
     }
 
     /**
@@ -75,36 +99,111 @@ class CopilotService {
      * @return A structured CopilotResponse ready for further processing
      */
     private fun parseResponse(raw: String): CopilotResponse {
-        // Remove usage statistics from the end
+        // Remover estatísticas do final
         val cleanOutput = raw.substringBefore("Total usage est:").trim()
 
-        // Extract commands from code blocks (```...```)
+        // Extrair comandos (entre ```)
         val commandRegex = Regex("```(?:bash|powershell|sh|git)?\n(.*?)\n```", RegexOption.DOT_MATCHES_ALL)
         val commands = commandRegex.findAll(cleanOutput)
             .map { it.groupValues[1].trim() }
             .filter { it.isNotBlank() }
             .toList()
 
-        // Detect warnings about destructive operations
+        // Detectar avisos
         val hasWarning = cleanOutput.contains("destructive", ignoreCase = true) ||
                 cleanOutput.contains("permanently", ignoreCase = true) ||
                 cleanOutput.contains("lost", ignoreCase = true) ||
                 cleanOutput.contains("cannot be reversed", ignoreCase = true) ||
-                cleanOutput.contains("careful", ignoreCase = true)
+                cleanOutput.contains("careful", ignoreCase = true) ||
+                cleanOutput.contains("danger", ignoreCase = true)
 
-        // Extract explanation (text outside code blocks)
+        // Lista de padrões de "ruído" técnico para filtrar
+        val noisePatterns = listOf(
+            // Erros de execução
+            "exited with error",
+            "Command failed",
+            "not recognized",
+            "Permission denied",
+            "could not request permission",
+
+            // Erros de PowerShell/sistema
+            "PowerShell 6+",
+            "pwsh.exe",
+            "pwsh",
+            "is not available",
+
+            // Erros de API/GitHub
+            "failed to list commits",
+            "404 Not Found",
+            "GET https://api.github.com",
+
+            // Ruído de MCP/GitHub tools
+            "github-mcp-server",
+            "mcp-server",
+
+            // Símbolos de status (aparecem antes de comandos executados)
+            "✓",
+            "✗",
+            "Ô£ù", // Símbolo do Copilot
+            "ÔùÅ",
+            "Ôöö",
+
+            // Padrões de tentativas de execução
+            "$ git",
+            "$ cd",
+            "$ powershell",
+
+            // Mensagens técnicas comuns
+            "Error: Error:",
+            "operable program or batch file"
+        )
+
+        // Também filtrar linhas que são apenas JSON
+        val jsonPattern = Regex("^\\s*[{\\[].*[}\\]]\\s*$")
+
+        // Extrair explicação limpa
         val explanation = cleanOutput
-            .replace(commandRegex, "")
+            .replace(commandRegex, "") // Remove blocos de código
             .trim()
             .lines()
-            .filter { it.isNotBlank() }
+            .filter { line ->
+                // Manter apenas linhas que:
+                // 1. Não estão em branco
+                // 2. Não contêm padrões de ruído
+                // 3. Não são JSON puro
+                // 4. Não começam com $ (comandos shell)
+                val trimmedLine = line.trim()
+                trimmedLine.isNotBlank() &&
+                        noisePatterns.none { pattern -> trimmedLine.contains(pattern, ignoreCase = true) } &&
+                        !jsonPattern.matches(trimmedLine) &&
+                        !trimmedLine.startsWith("$")
+            }
             .joinToString("\n")
+            .trim()
+
+        // Se a explicação ficou vazia ou muito curta, usar fallback
+        val finalExplanation = if (explanation.length < 20) {
+            "Command suggested by GitHub Copilot CLI."
+        } else {
+            formatExplanation(explanation)
+        }
 
         return CopilotResponse(
             rawOutput = raw,
-            explanation = explanation,
+            explanation = finalExplanation,
             commands = commands,
             hasWarning = hasWarning
         )
+    }
+    /**
+     * Formats and cleans explanation text for better readability.
+     */
+    private fun formatExplanation(text: String): String {
+        return text
+            .lines()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .joinToString("\n")
+            .replace(Regex("\n{3,}"), "\n\n") // Max 2 line breaks
     }
 }

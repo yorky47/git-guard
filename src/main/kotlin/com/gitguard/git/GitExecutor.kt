@@ -21,13 +21,26 @@ class GitExecutor {
      */
     fun execute(command: String): ExecutionResult {
         return try {
-            // Remove 'git' prefix if present (Copilot sometimes includes it)
-            val cleanCommand = command.removePrefix("git").trim()
-            val fullCommand = "git $cleanCommand"
+            // Normalizamos o comando para garantir que começa com 'git '
+            val fullCommand = if (command.trim().startsWith("git ")) {
+                command.trim()
+            } else {
+                "git ${command.trim()}"
+            }
 
-            println("\n🔧 Executing: $fullCommand\n")
+            println("\n [Executing]: $fullCommand\n")
 
-            val process = ProcessBuilder("git", *cleanCommand.split(" ").toTypedArray())
+            // Detetamos o SO para usar o interpretador correto
+            val isWindows = System.getProperty("os.name").lowercase().contains("windows")
+            val processBuilder = if (isWindows) {
+                // No Windows, usamos 'cmd /c' para que as aspas sejam respeitadas
+                ProcessBuilder("cmd.exe", "/c", fullCommand)
+            } else {
+                // Em Unix/Linux/macOS, usamos 'sh -c'
+                ProcessBuilder("sh", "-c", fullCommand)
+            }
+
+            val process = processBuilder
                 .redirectErrorStream(false)
                 .start()
 
@@ -38,7 +51,13 @@ class GitExecutor {
             if (exitCode == 0) {
                 ExecutionResult.Success(output.ifBlank { "Command executed successfully!" })
             } else {
-                ExecutionResult.Error(error.ifBlank { "Command failed with exit code: $exitCode" })
+                // IMPORTANTE: Se o error estiver vazio, tentamos mostrar o output
+                val errorMessage = when {
+                    error.isNotBlank() -> error
+                    output.isNotBlank() -> output
+                    else -> "Git returned exit code $exitCode with no message."
+                }
+                ExecutionResult.Error(errorMessage)
             }
 
         } catch (e: IOException) {

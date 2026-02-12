@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.2.20"
     application
+    kotlin("plugin.serialization") version "2.2.20"
 }
 
 group = "com.gitguard"
@@ -13,7 +14,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
     // For colored console output
     implementation("com.github.ajalt.mordant:mordant:2.3.0")
 
@@ -28,16 +29,23 @@ tasks.test {
 kotlin {
     jvmToolchain(21)
 }
-// Task para criar executável
-tasks.register<Jar>("fatJar") {
-    archiveBaseName.set("gitguard")
-    archiveVersion.set("1.0.0")
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
+// Task principal para criar JAR executável com todas as dependências
+tasks.jar {
     manifest {
-        attributes["Main-Class"] = "com.gitguard.MainKt"
+        attributes(
+            "Main-Class" to "com.gitguard.MainKt"
+        )
     }
 
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    with(tasks.jar.get() as CopySpec)
+    // Incluir todas as dependências no JAR
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(configurations.runtimeClasspath.get().map {
+        if (it.isDirectory) it else zipTree(it)
+    })
+}
+
+// Alias para facilitar
+tasks.register("fatJar") {
+    dependsOn("jar")
 }

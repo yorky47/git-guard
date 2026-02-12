@@ -6,7 +6,7 @@ import com.gitguard.git.GitExecutor
 import com.gitguard.git.GitValidator
 import com.gitguard.model.CommandAnalysis
 import com.gitguard.risk.RiskClassifier
-import com.gitguard.ui.Terminal
+import com.gitguard.ui.TerminalUI
 
 /**
  * Processes natural language user intent and orchestrates the entire GitGuard workflow.
@@ -24,7 +24,7 @@ class CommandProcessor(
     private val riskClassifier: RiskClassifier = RiskClassifier(),
     private val gitValidator: GitValidator = GitValidator(),
     private val gitExecutor: GitExecutor = GitExecutor(),
-    private val terminal: Terminal = Terminal()
+    private val terminal: TerminalUI = TerminalUI()
 ) {
 
     /**
@@ -55,16 +55,18 @@ class CommandProcessor(
         // Step 2: Display repository context
         val repoInfo = gitValidator.getRepositoryInfo()
         if (repoInfo != null) {
-            println("📁 Repository: branch '${repoInfo.currentBranch}'")
+            println("[REPOSITORY] Branch: ${repoInfo.currentBranch}")
             if (repoInfo.hasUncommittedChanges) {
-                println("⚠️  You have uncommitted changes")
+                println("[!] You have uncommitted changes")
             }
             println()
         }
 
         // Step 3: Request suggestion from Copilot
-        println("🔍 Analyzing: \"$intent\"")
-        println("⏳ Consulting GitHub Copilot CLI...\n")
+        println("[ANALYZING] \"$intent\"")
+        println("[INFO] Consulting GitHub Copilot CLI...")
+        println()
+
 
         val response = try {
             copilot.suggest(intent)

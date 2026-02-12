@@ -239,25 +239,25 @@ class RiskClassifier {
                 |[!] WARNING: This command DISCARDS ALL UNCOMMITTED CHANGES!
                 |    
                 |    What will be PERMANENTLY LOST:
-                |    • All modifications to tracked files
-                |    • Cannot be recovered (no reflog for working directory)
+                |    * All modifications to tracked files
+                |    * Cannot be recovered (no reflog for working directory)
                 |    
                 |    Safer alternative:
-                |    • git stash (temporarily saves changes)
-                |    • git stash pop (restores them later)
+                |    * git stash (temporarily saves changes)
+                |    * git stash pop (restores them later)
             """.trimMargin()
 
             normalizedCommand.contains("reset --hard") -> """
                 |[!] DANGER: --hard flag PERMANENTLY DELETES changes!
                 |    
                 |    What will be PERMANENTLY LOST:
-                |    • All uncommitted changes
-                |    • All staged changes
-                |    • Can only recover via reflog (if commits existed)
+                |    * All uncommitted changes
+                |    * All staged changes
+                |    * Can only recover via reflog (if commits existed)
                 |    
                 |    Safer alternative:
-                |    • git reset --soft HEAD~1 (keeps changes staged)
-                |    • git reset --mixed HEAD~1 (keeps changes unstaged)
+                |    * git reset --soft HEAD~1 (keeps changes staged)
+                |    * git reset --mixed HEAD~1 (keeps changes unstaged)
             """.trimMargin()
 
             normalizedCommand.contains("push --force") ||
@@ -265,12 +265,12 @@ class RiskClassifier {
                 |[!] DANGER: Force push can OVERWRITE others' work!
                 |    
                 |    Risks:
-                |    • Deletes commits that teammates pushed
-                |    • Causes conflicts for entire team
-                |    • Can lose work permanently
+                |    * Deletes commits that teammates pushed
+                |    * Causes conflicts for entire team
+                |    * Can lose work permanently
                 |    
                 |    Safer alternative:
-                |    • git push --force-with-lease (checks remote first)
+                |    * git push --force-with-lease (checks remote first)
             """.trimMargin()
 
             normalizedCommand.contains("clean -f") ||
@@ -278,12 +278,12 @@ class RiskClassifier {
                 |[!] DANGER: Git clean PERMANENTLY DELETES untracked files!
                 |    
                 |    What will be PERMANENTLY LOST:
-                |    • Files never added to git
-                |    • Build artifacts, logs, etc.
-                |    • Cannot be recovered
+                |    * Files never added to git
+                |    * Build artifacts, logs, etc.
+                |    * Cannot be recovered
                 |    
                 |    Safer approach:
-                |    • Run 'git clean -n' first (dry run - shows what will be deleted)
+                |    * Run 'git clean -n' first (dry run - shows what will be deleted)
             """.trimMargin()
 
             matchedPattern != null -> """

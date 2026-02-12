@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
 fun showUsage() {
     println("""
         |
-        |🛡️  GitGuard - Git Safety Assistant
+        |🛡  GitGuard - Git Safety Assistant
         |━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         |
         |Usage: gitguard <your intention in natural language>
