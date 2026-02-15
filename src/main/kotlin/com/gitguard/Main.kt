@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
     // Configure UTF-8 encoding
     SystemConfig.configureUTF8()
 
-    if (args.isEmpty()) {
+    if (args.isEmpty() || args.any { it in listOf("--help", "-h", "help") }) {
         showUsage()
         return
     }
@@ -33,11 +33,17 @@ fun main(args: Array<String>) {
  * Shows application description, usage syntax, examples, workflow steps,
  * and installation instructions for required dependencies.
  */
+/**
+ * Displays the usage information and examples for the GitGuard application.
+ *
+ * Shows application description, usage syntax, examples, workflow steps,
+ * and installation instructions for required dependencies.
+ */
 fun showUsage() {
     println("""
         |
-        |🛡  GitGuard - Git Safety Assistant
-        |━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        |GitGuard - Git Safety Assistant
+        |========================================
         |
         |Usage: gitguard <your intention in natural language>
         |

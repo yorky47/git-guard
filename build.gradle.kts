@@ -44,6 +44,17 @@ tasks.jar {
         if (it.isDirectory) it else zipTree(it)
     })
 }
+tasks.register("distribution") {
+    dependsOn("installDist")
+
+    doLast {
+        println(" Distribution created successfully!")
+        println(" Executables location:")
+        println("   - Linux/macOS: build/install/${project.name}/bin/${project.name}")
+        println("   - Windows:     build/install/${project.name}/bin/${project.name}.bat")
+        println("\n Add to PATH or copy to /usr/local/bin (Linux/macOS)")
+    }
+}
 
 // Alias para facilitar
 tasks.register("fatJar") {
